@@ -7,6 +7,7 @@ using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Microsoft.AspNet.Identity;
+using System.Diagnostics;
 
 namespace Paging_os
 {
@@ -75,6 +76,12 @@ namespace Paging_os
         protected void Unnamed_LoggingOut(object sender, LoginCancelEventArgs e)
         {
             Context.GetOwinContext().Authentication.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+        }
+
+        protected void Button1_Click(object sender, EventArgs e)
+        {
+            var pc = new PerformanceCounter("Mono Memory", "Total Physical Memory");
+          //  TextBox1.Text= "Physical RAM (bytes): {0}" + pc.RawValue;
         }
     }
 
