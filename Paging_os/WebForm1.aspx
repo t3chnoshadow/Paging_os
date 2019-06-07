@@ -37,6 +37,7 @@
         <br />
         <br />
         Add:<asp:TextBox ID="TextBox3" runat="server"></asp:TextBox>
+        <asp:Button ID="Button2" runat="server" Enabled="False" OnClick="Button2_Click" Text="Insert" />
     </form>
 </body>
 </html>

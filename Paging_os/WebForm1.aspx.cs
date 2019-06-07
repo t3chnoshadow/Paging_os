@@ -32,6 +32,68 @@ namespace Paging_os
         int fault = 0;
         int[] second;
 
+        public void secondchance(int frame, int num)
+        {
+           
+            page = new int[(frame* 3) +1];
+            ListBox1.Items.Add(num.ToString());
+            for(int i = 0; i<page.Length; i++)
+            {
+                ListBox1.SelectedIndex = i;
+                page[i] = Convert.ToInt32( ListBox1.SelectedValue);
+            }
+
+            second = new int[frame];
+            for (int i = 0; i < frame; i++)
+            {
+                second[i] = 0;
+            }
+
+
+            chance = new int[frame];
+            bool flag = false;
+            for (int i = 0; i < page.Length; i++)
+            {
+
+                ListBox1.SelectedIndex = i;
+                ListBox2.Items.Clear();
+                ListBox3.Items.Clear();
+                if (!chance.Contains(page[i]))
+                {
+                    fault++;
+                    for (int k = 0; k < frame; k++)
+                    {
+                        if (second[k] > 0 && second[k] != 0)
+                        {
+                            second[k]--;
+                        }
+                        else if (second[k] == 0 && !flag)
+                        {
+                            flag = true;
+                            chance[k] = page[i];
+                        }
+                    }
+                    flag = false;
+                }
+                else
+                {
+                    second[Array.IndexOf(chance, page[i])]++;
+                }
+
+                for (int l = 0; l < page.Length - 1; l++)
+                {
+                    try
+                    {
+                        ListBox2.Items.Add(chance[l].ToString());
+                        ListBox3.Items.Add(second[l].ToString());
+                    }
+                    catch
+                    { }
+                }
+                //Thread.Sleep(500);
+            }
+        }
+
         public void secondchance(int frame)
         {
             second = new int[frame];
@@ -103,6 +165,15 @@ namespace Paging_os
             Label1.Text = "Amount of frames: " + (Math.Floor(frames)).ToString();
             paging(Convert.ToInt32(frames));
             secondchance(Convert.ToInt32(frames));
+            Label2.Text = "Page faults: "+fault;
+            Button2.Enabled = true;
+        }
+
+        protected void Button2_Click(object sender, EventArgs e)
+        {
+            double frames = calc(Convert.ToDouble(TextBox1.Text), Convert.ToDouble(TextBox2.Text));
+            secondchance(Convert.ToInt32(frames),Convert.ToInt32(TextBox3.Text));
+            Label2.Text = "Page faults: " + fault;
         }
     }
 }
